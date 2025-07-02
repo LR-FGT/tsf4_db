@@ -92,7 +92,7 @@ else:
 # Filtrar los instrumentos que estén instalados en esas ubicaciones
 instrumentos_filtrados = df_registro[
     df_registro["ubicacion"].isin(ubicaciones_seleccionadas)
-]["instrumento"].unique().tolist()
+]["nombre"].unique().tolist()
 
 # Ahora muestra solo esos instrumentos
 seleccionar_todos_instrumentos = st.checkbox(
