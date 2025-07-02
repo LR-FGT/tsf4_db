@@ -33,9 +33,10 @@ def get_engine():
 @st.cache_data
 def get_table_names():
     engine = get_engine()
-    with engine.connect() as conn:
-        result = conn.execute(text("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"))
-        return [row[0] for row in result.fetchall()]
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"))
+            return [row[0] for row in result.fetchall()]
     except Exception as e:
         st.error(f"Error al conectar a la base de datos: {e}")
         return []
@@ -43,8 +44,9 @@ def get_table_names():
 @st.cache_data
 def load_table(table_name):
     engine = get_engine()
-    with engine.connect() as conn:
-        return pd.read_sql(f"SELECT * FROM {table_name}", conn)
+    try:
+        with engine.connect() as conn:
+            return pd.read_sql(f"SELECT * FROM {table_name}", conn)
     except Exception as e:
         st.error(f"Error al conectar a la base de datos: {e}")
         return []
