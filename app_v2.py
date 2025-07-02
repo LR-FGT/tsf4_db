@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from sqlalchemy import create_engine, text
+from sqlalchemy.pool import NullPool
 from io import BytesIO
 from pyproj import Transformer
 
@@ -26,7 +27,7 @@ DB_URL = st.secrets["DB_URL"]
 
 @st.cache_resource
 def get_engine():
-    return create_engine(DB_URL)
+    return create_engine(DB_URL, poolclass=NullPool)
 
 # Cachear tablas
 @st.cache_data
