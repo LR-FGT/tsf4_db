@@ -77,7 +77,7 @@ ubicaciones_disponibles = df_registro["ubicacion"].unique().tolist()
 # Selector de ubicación (con opción seleccionar todas)
 seleccionar_todas_ubicaciones = st.checkbox(
     "✅ Seleccionar todas las ubicaciones",
-    value=True
+    value=False
 )
 
 if seleccionar_todas_ubicaciones:
@@ -97,7 +97,7 @@ instrumentos_filtrados = df_registro[
 # Ahora muestra solo esos instrumentos
 seleccionar_todos_instrumentos = st.checkbox(
     "✅ Seleccionar todos los instrumentos en estas ubicaciones",
-    value=True
+    value=False
 )
 
 if seleccionar_todos_instrumentos:
