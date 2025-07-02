@@ -67,13 +67,50 @@ tablas = get_table_names()
 
 # Cargar instrumentos
 df_instrumentos = load_table("instrumentos")
-instrumentos_disponibles = df_instrumentos["nombre"].unique().tolist()
 
-instrumentos_seleccionados = st.multiselect(
-    "🎯 Selecciona uno o varios instrumentos:",
-    instrumentos_disponibles,
-    default=instrumentos_disponibles[:1]
+# Cargar registros de instalación
+df_registro = load_table("registro_instalacion")
+
+# Obtener lista de ubicaciones disponibles
+ubicaciones_disponibles = df_registro["ubicacion"].unique().tolist()
+
+# Selector de ubicación (con opción seleccionar todas)
+seleccionar_todas_ubicaciones = st.checkbox(
+    "✅ Seleccionar todas las ubicaciones",
+    value=True
 )
+
+if seleccionar_todas_ubicaciones:
+    ubicaciones_seleccionadas = ubicaciones_disponibles
+else:
+    ubicaciones_seleccionadas = st.multiselect(
+        "📍 Selecciona una o varias ubicaciones:",
+        ubicaciones_disponibles,
+        default=ubicaciones_disponibles[:1]
+    )
+
+# Filtrar los instrumentos que estén instalados en esas ubicaciones
+instrumentos_filtrados = df_registro[
+    df_registro["ubicacion"].isin(ubicaciones_seleccionadas)
+]["instrumento"].unique().tolist()
+
+# Ahora muestra solo esos instrumentos
+seleccionar_todos_instrumentos = st.checkbox(
+    "✅ Seleccionar todos los instrumentos en estas ubicaciones",
+    value=True
+)
+
+if seleccionar_todos_instrumentos:
+    instrumentos_seleccionados = instrumentos_filtrados
+else:
+    instrumentos_seleccionados = st.multiselect(
+        "🎯 Selecciona uno o varios instrumentos en las ubicaciones elegidas:",
+        instrumentos_filtrados,
+        default=instrumentos_filtrados[:1]
+    )
+
+st.write("Instrumentos seleccionados:", instrumentos_seleccionados)
+st.write("Ubicaciones seleccionadas:", ubicaciones_seleccionadas)
 
 st.sidebar.header("⏱️ Filtro de fechas")
 
