@@ -27,7 +27,7 @@ DB_URL = st.secrets["DB_URL"]
 
 @st.cache_resource
 def get_engine():
-    return create_engine(DB_URL, poolclass=NullPool)
+    return create_engine(DB_URL)
 
 # Cachear tablas
 @st.cache_data
